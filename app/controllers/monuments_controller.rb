@@ -27,13 +27,15 @@ class MonumentsController < ApplicationController
     respond_to do |format|
       if @monument.save
         format.html { redirect_to monument_path(@monument) }
-        format.json
+        format.json { render :create, status: :created } # Render the create.json.jbuilder view with status created
       else
         format.html { render "monuments/new", status: :unprocessable_entity }
-        format.json
+        format.json { render json: @monument.errors, status: :unprocessable_entity } # Render the errors as JSON
       end
     end
   end
+
+
 
   # PATCH/PUT /monuments/1
   def update

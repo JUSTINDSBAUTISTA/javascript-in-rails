@@ -5,9 +5,6 @@ export default class extends Controller {
   static targets = ["items", "form"]
 
   connect() {
-    console.log(this.element)
-    console.log(this.itemsTarget)
-    console.log(this.formTarget)
   }
   send(event) {
     event.preventDefault()
@@ -19,7 +16,12 @@ export default class extends Controller {
     })
     .then(response => response.json())
     .then((data) => {
-      console.log(data);
+      if (data.inserted_item) {
+        // beforeend could also be dynamic with Stimulus values
+        this.itemsTarget.insertAdjacentHTML("beforeend", data.inserted_item)
+      }
+      this.formTarget.outerHTML = data.form
     })
+    .catch(error => console.error('Error:', error));
   }
 }
